@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY appname "bird-in-hand">
+    <!ENTITY publisher "FunkyNet Software">
+    ]>
+
+<resources>
+    <string name="package_name_pro">com.birdinhand.funkynetsoftware.pro</string>
+    <string name="appname_export">bird-in-hand</string>    <!-- Strings to support Candidate Entry -->
+    <string name="edit_candidate_intro">Enter new person here.</string>
+    <string name="edit_candidate_hint">Enter new person Name.</string>
+    <string name="confirm_edit_initials_message">Enter new initials for this person (limit 2 characters).</string>
+    <string name="candidate_saved">Person has been saved.</string>
+    <string name="intro_message">Enter persons here .... </string>
+    <string name="edit_candidate_notes_hint">Enter notes about this person</string>
+    <string name="confirm_delete_message">Are you sure you want to delete this person?</string>
+    <string name="candidate_save_message">Person has been successfully saved.</string>
+    <string name="candidate_delete_message">Person has been successfully deleted.</string>
+    <!-- Strings to support the Evaluation activity-->
+    <string name="next_question_button_alt">Next Person</string>
+    <string name="dialog_no_candidates_title">No People Found!</string>
+    <string name="dialog_no_candidates_message">You haven\'t added any persons yet.  Please select Add People and add people. </string>
+
+    <string name="title_activity_candidates_entry">bird-in-hand: Enter People</string>
+    <string name="title_activity_candidates_update">bird-in-hand: Maintain People</string>
+    <string name="title_activity_questions_entry">bird-in-hand: Enter Questions</string>
+    <string name="title_activity_questions_update">bird-in-hand: Modify Questions</string>
+    <string name="title_activity_evaluation">bird-in-hand: Evaluate People</string>
+    <string name="title_activity_report">bird-in-hand: See Results</string>
+
+    <string name="feature_not_available_message">This feature is not available in the free version of bird-in-hand.  Select OK now to upgrade to the Pro version and the most out of the app!</string>
+
+    // for tutorial/showcase
+    <string name="showcase_main_title">bird-in-hand Tutorial</string>
+    <string name="showcase_hint_title">bird-in-hand Hints</string>
+</resources>
