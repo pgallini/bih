@@ -30,6 +30,9 @@
 
     <string name="feature_not_available_message">This feature is not available in the free version of bird-in-hand.  Select OK now to upgrade to the Pro version and the most out of the app!</string>
 
+    <string name="xCoordLable">Availability:</string>
+    <string name="yCoordLable">Attraction:</string>
+
     // for tutorial/showcase
     <string name="showcase_main_title">bird-in-hand Tutorial</string>
     <string name="showcase_hint_title">bird-in-hand Hints</string>

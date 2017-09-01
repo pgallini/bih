@@ -40,8 +40,9 @@
                 <TextView
                     android:id="@+id/textView"
                     style="@style/MainButtonText"
-                    android:layout_alignBottom="@id/button_add_people"
-                    android:layout_alignLeft="@id/button_add_people"
+                    android:layout_alignBottom="@+id/button_add_people"
+                    android:layout_alignRight="@+id/button_add_people"
+                    android:gravity="bottom|right"
                     android:text="@string/add_people_title" />
             </RelativeLayout>
 
@@ -60,6 +61,8 @@
                     android:id="@+id/eval_card_title"
                     style="@style/MainButtonText"
                     android:layout_alignBottom="@+id/button_set_questions"
+                    android:layout_alignRight="@+id/button_set_questions"
+                    android:gravity="bottom"
                     android:text="@string/evaluate_title" />
             </RelativeLayout>
 
@@ -72,13 +75,14 @@
                 <ImageView
                     android:id="@+id/button_see_results"
                     style="@style/MainButtonCard"
-                    android:layout_alignParentBottom="true"
                     android:src="@drawable/reports_image" />
 
                 <TextView
                     android:id="@+id/reprts_card_title"
                     style="@style/MainButtonText"
                     android:layout_alignBottom="@+id/button_see_results"
+                    android:layout_alignRight="@+id/button_see_results"
+                    android:gravity="bottom|right"
                     android:text="@string/reports_title" />
             </RelativeLayout>
 
