@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
     private Menu menu;
     private Tracker mTracker;  // used for Google Analytics
 
-
     private final int CANDIDATESLIST_ACTIVITY_REQUEST_CODE = 21;
     private final int EVALUATION_ACTIVITY_REQUEST_CODE = 22;
 
@@ -135,7 +134,8 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
 //        getSupportActionBar().setIcon(R.drawable.ic_actionbar_bih);
 
         // add Pro or Free to title
-        augmentAppName();
+        // turning this off ... we set the title in the build.gradle file - I don't think this is needed
+//        augmentAppName();
         // run init stuff
         inititateApp();
 
