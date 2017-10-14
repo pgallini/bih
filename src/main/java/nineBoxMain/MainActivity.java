@@ -123,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nine_box_main);
 
+        // TODO ensure that onPause handles freeing up resources, stopping services, disable sensor listeners,
+        //     and turning off loction requests
         // initialize preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
