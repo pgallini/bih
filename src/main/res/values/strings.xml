@@ -34,6 +34,9 @@
     <string name="xCoordLable">Availability:</string>
     <string name="yCoordLable">Attraction:</string>
 
+    // for pop-up in Report, lets use Reminders instead of Notes for bih
+    <string name="notesLabel">Reminders:</string>
+
     // for tutorial/showcase
     <string name="showcase_main_title">bird-in-hand Tutorial</string>
     <string name="showcase_hint_title">bird-in-hand Hints</string>
