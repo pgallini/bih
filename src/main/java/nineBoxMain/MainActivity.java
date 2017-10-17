@@ -113,10 +113,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
     }
 
     // for the showcase (tutorial) screen:
-    ShowcaseView sv;
-    ShowcaseView sv2;
-    ShowcaseView sv3;
-    ShowcaseView sv4;
+    ShowcaseView sv, sv2, sv3, sv4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,12 +129,6 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-        // this includes the icon in the title / action bar ... turning off for now
-//        getSupportActionBar().setIcon(R.drawable.ic_actionbar_bih);
-
-        // add Pro or Free to title
-        // turning this off ... we set the title in the build.gradle file - I don't think this is needed
-//        augmentAppName();
         // run init stuff
         inititateApp();
 
@@ -159,9 +150,6 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         findViewById(R.id.button_add_people).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(view.getContext(), CandidatesListActivity.class);
-//                startActivity(intent);
-                // start CandidatesListActivity such that we can get a result back - for the tutorial flag
                 Intent intent = new Intent(view.getContext(), CandidatesListActivity.class);
                 intent.putExtra("myKey", "sampleText");
                 startActivityForResult(intent, CANDIDATESLIST_ACTIVITY_REQUEST_CODE);
@@ -183,21 +171,8 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
                 startActivity(intent);
             }
         });
-        findViewById(R.id.exit_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
-        findViewById(R.id.rate_app_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                rateApp();
-            }
-        });
-
     }
+
     private void augmentAppName() {
         String currentTitle = (String) this.getTitle();
 
@@ -387,6 +362,8 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
                 setImport_or_export_selected_to_import();
                 verifyStoragePermissionsForImport(this);
                 return true;
+            case R.id.rate_app:
+                rateApp();
             // Decided not to add an About screen - but may add it later  - need to uncomment-out the activity from the Manifest
             // OK - well, decided to display the version using Toast for now.
             case R.id.display_version:
