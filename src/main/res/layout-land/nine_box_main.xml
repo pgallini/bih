@@ -17,25 +17,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:weightSum="5">
+        android:gravity="center_vertical|center_horizontal"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="3"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="vertical">
 
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_small"
+                android:layout_margin="@dimen/margin_medium"
                 android:elevation="@dimen/abc_action_bar_default_height_material">
 
                 <ImageView
                     android:id="@+id/button_add_people"
                     style="@style/MainButtonCard"
-                    android:layout_marginTop="@dimen/margin_medium"
                     android:src="@drawable/add_people_image" />
 
                 <TextView
@@ -50,7 +49,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/card_image_height"
-                android:layout_margin="@dimen/margin_small"
+                android:layout_margin="@dimen/margin_medium"
                 android:elevation="@dimen/abc_action_bar_default_height_material">
 
                 <ImageView
@@ -70,7 +69,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/card_image_height"
-                android:layout_margin="@dimen/margin_small"
+                android:layout_margin="@dimen/margin_medium"
                 android:elevation="@dimen/abc_action_bar_default_height_material">
 
                 <ImageView
@@ -89,28 +88,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            style="@style/MainButtonLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center_vertical|center_horizontal|center"
-            android:layout_weight="2"
-            android:gravity="center_vertical|center_horizontal"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/exit_button"
-                style="@style/MainButton"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/mutedbutton_color"
-                android:text="@string/exit_button" />
-
-            <Button
-                android:id="@+id/rate_app_button"
-                style="@style/MainButton"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/rate_app_button" />
-        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
