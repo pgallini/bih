@@ -45,17 +45,21 @@ import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.birdinhand.funkynetsoftware.BuildConfig;
 import com.birdinhand.funkynetsoftware.R;
+import com.example.android.funkygridlibrary.common.BuildConfigUtils;
 import com.example.android.funkygridlibrary.common.Utilities;
 import com.example.android.funkygridlibrary.databaseOpenHelper.DatabaseOpenHelper;
 import com.example.android.funkygridlibrary.nineBoxCandidates.CandidatesListActivity;
 import com.example.android.funkygridlibrary.nineBoxEvaluation.EvalCandidatesListActivity;
 import com.example.android.funkygridlibrary.nineBoxQuestions.QuestionsListActivity;
 import com.example.android.funkygridlibrary.nineBoxReport.ReportActivity;
-import com.github.amlcurran.showcaseview.BuildConfig;
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -67,6 +71,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+//import com.github.amlcurran.showcaseview.BuildConfig;
 
 /**
  *
@@ -87,6 +93,11 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
 
     private final int CANDIDATESLIST_ACTIVITY_REQUEST_CODE = 21;
     private final int EVALUATION_ACTIVITY_REQUEST_CODE = 22;
+
+    // TODO switch to use the real App Id before pubishing!!
+    private final String ADMOB_APP_ID="ca-app-pub-4484883041464497~2085113927";
+    private final String ADMOB_APP_ID_TEST="ca-app-pub-3940256099942544~6300978111";
+    private AdView mAdView;
 
     static final private int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 876;
     static final private int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 877;
@@ -124,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         //     and turning off loction requests
         // initialize preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
 
         // attach the layout to the toolbar object and then set the toolbar as the ActionBar ...
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -331,13 +343,10 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         switch (item.getItemId()) {
             case R.id.menu_configure_questions:
                 // if this is the Free version of the app, prompt for upgrade
+                String flavor = (String) BuildConfigUtils.getBuildConfigValue(this, "FLAVOR");
 
                 try {
-                    System.out.println( "  BuildConfig.FLAVOR = ");
-                    System.out.println( BuildConfig.FLAVOR);
-
-                    // If they click OK, take them to the App Store to buy the Pro version of the app
-                    if(BuildConfig.FLAVOR == "free") {
+                    if(flavor.equals("free")) {
                         // If this is the Free version of the app - show the Upgrade Now dialog
                         showFeatureNotAvailableDialog( this );
                     } else {
@@ -624,6 +633,17 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
     }
 
     private void inititateApp() {
+
+        // only show ads on the Free version of the app
+        if(BuildConfig.FLAVOR == "free") {
+            // Initialize AdMobs for the banner ads
+            MobileAds.initialize(this, ADMOB_APP_ID_TEST);
+            // find the adView in the main layout and load an ad
+            mAdView = (AdView) findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }
+
         // set-up Evaulations operations ...
         userOperations = new UserOperations(this);
         userOperations.open();
