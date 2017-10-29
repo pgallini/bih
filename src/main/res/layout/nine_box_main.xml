@@ -17,8 +17,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bih_watermark"
         android:gravity="center_horizontal"
-        android:scaleType="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -125,6 +125,23 @@
                     android:layout_weight="3"
                     android:text="@string/reports_title" />
             </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_gravity="bottom|center">
+
+            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-3940256099942544/6300978111"></com.google.android.gms.ads.AdView>
         </RelativeLayout>
     </LinearLayout>
 
