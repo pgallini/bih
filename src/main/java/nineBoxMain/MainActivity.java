@@ -318,6 +318,14 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         } else {
             tutMenuItem.setTitle(title_on);
         }
+        String flavor = (String) BuildConfigUtils.getBuildConfigValue(this, "FLAVOR");
+
+        if(flavor.equals("pro")) {
+            // hide the Upgrade option if the version is Pro
+            MenuItem upgradeMenuItem = menu.findItem(R.id.menu_upgrade);
+            upgradeMenuItem.setVisible(false);
+        }
+
         return true;
     }
 
@@ -341,6 +349,9 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_upgrade:
+                showWhyUpgradeDialog( this );
+                return true;
             case R.id.menu_configure_questions:
                 // if this is the Free version of the app, prompt for upgrade
                 String flavor = (String) BuildConfigUtils.getBuildConfigValue(this, "FLAVOR");
@@ -416,6 +427,67 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    private void showWhyUpgradeDialog(final Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setIcon(R.drawable.ic_pg_icon);
+        builder.setTitle(getString(R.string.why_upgrade_title));
+        builder.setMessage(getString(R.string.why_upgrade_message));
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        try {
+                            Intent rateIntent = upgradeIntentForUrl("market://details");
+                            startActivity(rateIntent);
+                        } catch (ActivityNotFoundException e) {
+                            Intent rateIntent = upgradeIntentForUrl("https://play.google.com/store/apps/details");
+                            startActivity(rateIntent);
+                        }
+                    }
+                });
+
+        String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // negative button logic
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+//    public void displayUpgradePopUp() {
+//        final Dialog dialog = new Dialog(this);
+//        int maxDialogHeight = 320;
+//
+//        dialog.setContentView(com.example.android.funkygridlibrary.R.layout.upgrade_pop_up);
+//
+//        try {
+//            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        final TextView notesValue = (TextView) dialog.findViewById(com.example.android.funkygridlibrary.R.id.notesValue);
+//        final Button closeButton = (Button) dialog.findViewById(com.example.android.funkygridlibrary.R.id.close_button);
+//        closeButton.setOnClickListener(new View.OnClickListener() {
+//                                           @Override
+//                                           public void onClick(View view) {
+//                                               dialog.cancel();
+//                                           }
+//                                       }
+//        );
+//
+//        notesValue.setText("This is a test.  It is only a test");
+//
+//        dialog.show();
+//    }
 
     private Intent upgradeIntentForUrl(String url)
     {
