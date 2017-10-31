@@ -42,4 +42,21 @@
     // for tutorial/showcase
     <string name="showcase_main_title">bird-in-hand Tutorial</string>
     <string name="showcase_hint_title">bird-in-hand Hints</string>
+
+    <string name="showcase_message1">First, add people using the Add People button.</string>
+    <string name="showcase_message2">Provide some info for each person by hitting Capture Insights.</string>
+
+    <string name="showcase_message3">Finally, discover where you should focus with the See Results button.</string>
+    <string name="showcase_message4">When this tutorial is over, it will be toggled off.  Use the options menu to turn it back on.</string>
+    <string name="showcase_add_message1">Add people using the New button here.  A screen will be presented allowing you to enter basic info for
+        that person.  You can go through questions for each one at a time - just click the check box icon on this screen, or return to the
+    main menu and use the Capture Insights button to go through them all. </string>
+    <string name="showcase_eval_list_message1">Answer simple questions about each person here.  Just select a name and a series of questions will be presented. </string>
+    <string name="showcase_eval_list_message2">The icon on the right indicates your progress.  A check mark means you\'re done with that person. </string>
+    <string name="showcase_eval_list_message3">Just hit Done to return to the main screen when you\'re done. </string>
+    <string name="showcase_eval_message1">Respond to questions here.  Use the slider to provide a response from 1 to 10. </string>
+    <string name="showcase_eval_message2">Try to answer each question independently of the others (not what you think the final rating should be).  Hit the Next Question button to move to the next question. </string>
+    <string name="showcase_rpt_message1">After each person is evaluated, they will be represented on this report.  The ones in the upper right quadrant are the ones where you should focus your time.  </string>
+    <string name="showcase_rpt_message2">Use the Summary button to see a summary of the results.  </string>
+
 </resources>
