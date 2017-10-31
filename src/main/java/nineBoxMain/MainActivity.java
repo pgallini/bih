@@ -30,7 +30,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.StrictMode;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v13.app.ActivityCompat;
@@ -75,9 +74,8 @@ import java.util.Date;
 //import com.github.amlcurran.showcaseview.BuildConfig;
 
 /**
- *
  * created by Paul Gallini, 2016
- *
+ * <p>
  * This activity is the main activity for the app.
  */
 public class MainActivity extends AppCompatActivity implements OnShowcaseEventListener {
@@ -93,10 +91,11 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
 
     private final int CANDIDATESLIST_ACTIVITY_REQUEST_CODE = 21;
     private final int EVALUATION_ACTIVITY_REQUEST_CODE = 22;
+    private final int REPORT_ACTIVITY_REQUEST_CODE = 23;
 
     // TODO switch to use the real App Id before pubishing!!
-    private final String ADMOB_APP_ID="ca-app-pub-4484883041464497~2085113927";
-    private final String ADMOB_APP_ID_TEST="ca-app-pub-3940256099942544~6300978111";
+    private final String ADMOB_APP_ID = "ca-app-pub-4484883041464497~2085113927";
+    private final String ADMOB_APP_ID_TEST = "ca-app-pub-3940256099942544~6300978111";
     private AdView mAdView;
 
     static final private int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 876;
@@ -113,12 +112,15 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
     public String getImport_or_export_selected() {
         return import_or_export_selected;
     }
+
     public void setImport_or_export_selected_to_import() {
         this.import_or_export_selected = "import";
     }
+
     public void setImport_or_export_selected_to_export() {
         this.import_or_export_selected = "export";
     }
+
     public void setImport_or_export_selected_to_neither() {
         this.import_or_export_selected = "neither";
     }
@@ -145,8 +147,8 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         inititateApp();
 
         // this may be needed to allow us to send email
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
 
         // Obtain the shared Tracker instance.
 //        // TODO uncomment these lines when you add analytics back
@@ -155,15 +157,16 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
 //        sendScreenImageName(); // send tag to Google Analytics
 
         // start with running the Tutorial - if that option is selected
-        if( getShowTutorial_Main() ) {
+        if (getShowTutorial_Main()) {
             runTutorial();
         }
 
         findViewById(R.id.button_add_people).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(view.getContext(), CandidatesListActivity.class);
-                intent.putExtra("myKey", "sampleText");
+                intent.putExtra("displayTutorialMain", String.valueOf(displayTutorialAdd));
                 startActivityForResult(intent, CANDIDATESLIST_ACTIVITY_REQUEST_CODE);
             }
         });
@@ -171,8 +174,14 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         findViewById(R.id.button_set_questions).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // TODO Remove
+
+                System.out.println(" *** (in Main before) displayTutorialEval = ");
+                System.out.println(displayTutorialEval);
                 Intent intent = new Intent(view.getContext(), EvalCandidatesListActivity.class);
-                startActivity(intent);
+                intent.putExtra("displayTutorialMain", String.valueOf(displayTutorialEval));
+                startActivityForResult(intent, EVALUATION_ACTIVITY_REQUEST_CODE);
             }
         });
 
@@ -180,7 +189,8 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ReportActivity.class);
-                startActivity(intent);
+                intent.putExtra("displayTutorialMain", String.valueOf(displayTutorialRpt));
+                startActivityForResult(intent, REPORT_ACTIVITY_REQUEST_CODE);
             }
         });
     }
@@ -188,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
     private void augmentAppName() {
         String currentTitle = (String) this.getTitle();
 
-        if(BuildConfig.FLAVOR == "free") {
+        if (BuildConfig.FLAVOR == "free") {
 //            this.setTitle(currentTitle + " Free");
         } else {
             this.setTitle(currentTitle + " Pro");
@@ -225,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
                             @Override
                             public Point getPoint() {
 //                                return getPointTarget(R.id.button_see_results,6);
-                                return Utilities.getPointTarget(findViewById(R.id.button_see_results), 6 );
+                                return Utilities.getPointTarget(findViewById(R.id.button_see_results), 6);
                             }
                         };
 
@@ -238,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
                                     @Override
                                     public Point getPoint() {
 //                                        return getPointTarget(R.id.tool_bar, 1);
-                                        return Utilities.getPointTarget(findViewById(R.id.tool_bar), 1 );
+                                        return Utilities.getPointTarget(findViewById(R.id.tool_bar), 1);
                                     }
                                 };
                                 // hide the previous view
@@ -275,9 +285,10 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         SharedPreferences.Editor editor = settings.edit();
         MainActivity.evalTutorialToggles(editor);
     }
+
     private ShowcaseView buildTutorialView(ViewTarget target, int tutorialText, View.OnClickListener tutBtnListener) {
         return new ShowcaseView.Builder(MainActivity.this)
-                .withHoloShowcase()    // other options:  withHoloShowcase, withNewStyleShowcase, withMaterialShowcase,
+                .withNewStyleShowcase()    // other options:  withHoloShowcase, withNewStyleShowcase, withMaterialShowcase,
                 .setTarget(target)
                 .setContentTitle(R.string.showcase_main_title)
                 .setContentText(tutorialText)
@@ -320,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         }
         String flavor = (String) BuildConfigUtils.getBuildConfigValue(this, "FLAVOR");
 
-        if(flavor.equals("pro")) {
+        if (flavor.equals("pro")) {
             // hide the Upgrade option if the version is Pro
             MenuItem upgradeMenuItem = menu.findItem(R.id.menu_upgrade);
             upgradeMenuItem.setVisible(false);
@@ -331,7 +342,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
 
     // use on onPrepareMenuOptions to dynamicaly change the menu items (because onCreate only gets called once)
     @Override
-    public boolean onPrepareOptionsMenu( Menu menu ){
+    public boolean onPrepareOptionsMenu(Menu menu) {
         this.menu = menu;
 
         String title_on = getResources().getString(R.string.title_toggle_tutorial_on);
@@ -350,16 +361,16 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_upgrade:
-                showWhyUpgradeDialog( this );
+                showWhyUpgradeDialog(this);
                 return true;
             case R.id.menu_configure_questions:
                 // if this is the Free version of the app, prompt for upgrade
                 String flavor = (String) BuildConfigUtils.getBuildConfigValue(this, "FLAVOR");
 
                 try {
-                    if(flavor.equals("free")) {
+                    if (flavor.equals("free")) {
                         // If this is the Free version of the app - show the Upgrade Now dialog
-                        showFeatureNotAvailableDialog( this );
+                        showFeatureNotAvailableDialog(this);
                     } else {
                         Intent intent = new Intent(this, QuestionsListActivity.class);
                         this.startActivity(intent);
@@ -384,8 +395,8 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
                 return true;
             case R.id.rate_app:
                 rateApp();
-            // Decided not to add an About screen - but may add it later  - need to uncomment-out the activity from the Manifest
-            // OK - well, decided to display the version using Toast for now.
+                // Decided not to add an About screen - but may add it later  - need to uncomment-out the activity from the Manifest
+                // OK - well, decided to display the version using Toast for now.
             case R.id.display_version:
                 displayVersionName();
                 return true;
@@ -462,44 +473,13 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         dialog.show();
     }
 
-//    public void displayUpgradePopUp() {
-//        final Dialog dialog = new Dialog(this);
-//        int maxDialogHeight = 320;
-//
-//        dialog.setContentView(com.example.android.funkygridlibrary.R.layout.upgrade_pop_up);
-//
-//        try {
-//            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        final TextView notesValue = (TextView) dialog.findViewById(com.example.android.funkygridlibrary.R.id.notesValue);
-//        final Button closeButton = (Button) dialog.findViewById(com.example.android.funkygridlibrary.R.id.close_button);
-//        closeButton.setOnClickListener(new View.OnClickListener() {
-//                                           @Override
-//                                           public void onClick(View view) {
-//                                               dialog.cancel();
-//                                           }
-//                                       }
-//        );
-//
-//        notesValue.setText("This is a test.  It is only a test");
-//
-//        dialog.show();
-//    }
-
-    private Intent upgradeIntentForUrl(String url)
-    {
+    private Intent upgradeIntentForUrl(String url) {
         String targetPackageName = getResources().getString(R.string.package_name_pro);
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("%s?id=%s", url, targetPackageName)));
         int flags = Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
-        if (Build.VERSION.SDK_INT >= 21)
-        {
+        if (Build.VERSION.SDK_INT >= 21) {
             flags |= Intent.FLAG_ACTIVITY_NEW_DOCUMENT;
-        }
-        else
-        {
+        } else {
             //noinspection deprecation
             flags |= Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET;
         }
@@ -508,7 +488,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
     }
 
     private void displayVersionName() {
-        Toast.makeText(this, "App Version:: " + getVersionInfo() , Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "App Version:: " + getVersionInfo(), Toast.LENGTH_LONG).show();
     }
 
     public String getVersionInfo() {
@@ -574,7 +554,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
 
                             MenuItem toggleMenuItem = menu.findItem(R.id.toggle_tutorial);
                             toggleMenuItem.setTitle(title_on);
-                            }
+                        }
                     }
                 });
 
@@ -594,7 +574,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                if( getShowTutorial_Main() ) {
+                if (getShowTutorial_Main()) {
                     runTutorial();
                 }
             }
@@ -605,7 +585,8 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
 
     public boolean getShowTutorial_All() {
         // returns value for overall preference on whether to show Tutorial or not
-        SharedPreferences settings = getSharedPreferences("preferences", Context.MODE_PRIVATE);;
+        SharedPreferences settings = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        ;
         Boolean showTutorial = settings.getBoolean("pref_sync", true);
         return showTutorial;
     }
@@ -613,9 +594,12 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
     private boolean getShowTutorial_Main() {
         // returns value for whether to show tutorial for Main screen or not
         Boolean returnBool = false;
-        SharedPreferences settings = getSharedPreferences("preferences", Context.MODE_PRIVATE);;
+        SharedPreferences settings = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        ;
         Boolean showTutorial = settings.getBoolean("pref_sync", true);
-        if(showTutorial & displayTutorialMain) { returnBool = true; }
+        if (showTutorial & displayTutorialMain) {
+            returnBool = true;
+        }
         return returnBool;
     }
 
@@ -657,23 +641,32 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
 //            if (resultCode == RESULT_CANCELED) {
 //                System.out.println(" Evaluation was Cancelled");
 //            }
-            if( requestCode == CANDIDATESLIST_ACTIVITY_REQUEST_CODE ) {
+            if (requestCode == CANDIDATESLIST_ACTIVITY_REQUEST_CODE) {
                 // processing for return from Candidates List activity ....
-                String displayTutorialAddString = (extras != null ? extras.getString("returnKey") : "nothing returned");
+                String displayTutorialAddString = (extras != null ? extras.getString("displayTutorialAddString") : "nothing returned");
                 if (displayTutorialAddString != null) {
                     displayTutorialAdd = Boolean.parseBoolean(displayTutorialAddString);
                 }
                 ;
-            }
-                else if ( requestCode == EVALUATION_ACTIVITY_REQUEST_CODE ) {
+            } else if (requestCode == EVALUATION_ACTIVITY_REQUEST_CODE) {
                 // processing for return from Evaluation activity ....
-                String displayTutorialEvalstring = (extras != null ? extras.getString("returnKey") : "nothing returned");
+                String displayTutorialEvalstring = (extras != null ? extras.getString("displayTutorialEvalString") : "nothing returned");
                 if (displayTutorialEvalstring != null) {
                     displayTutorialEval = Boolean.parseBoolean(displayTutorialEvalstring);
                 }
+                System.out.println(" *** (in Main after) displayTutorialEval = ");
+                System.out.println(displayTutorialEval);
+            } else if (requestCode == REPORT_ACTIVITY_REQUEST_CODE) {
+                // processing for return from Report activity ....
+                String displayTutorialRptstring = (extras != null ? extras.getString("displayTutorialRptString") : "nothing returned");
+                if (displayTutorialRptstring != null) {
+                    displayTutorialRpt = Boolean.parseBoolean(displayTutorialRptstring);
+                }
+                System.out.println(" *** (in Main after) displayTutorialRpt = ");
+                System.out.println(displayTutorialRpt);
             }
         }
-        if(getShowTutorial_Main()){
+        if (getShowTutorial_Main()) {
             runTutorial();
         }
         // since one of the toggles for the tutorials may have changed, re-evalute ...
@@ -707,7 +700,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
     private void inititateApp() {
 
         // only show ads on the Free version of the app
-        if(BuildConfig.FLAVOR == "free") {
+        if (BuildConfig.FLAVOR == "free") {
             // Initialize AdMobs for the banner ads
             MobileAds.initialize(this, ADMOB_APP_ID_TEST);
             // find the adView in the main layout and load an ad
@@ -728,35 +721,28 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         }
 
     }
+
     /*
     * Start with rating the app
     * Determine if the Play Store is installed on the device
     *
     * */
-    public void rateApp()
-    {
-        try
-        {
+    public void rateApp() {
+        try {
             Intent rateIntent = rateIntentForUrl("market://details");
             startActivity(rateIntent);
-        }
-        catch (ActivityNotFoundException e)
-        {
+        } catch (ActivityNotFoundException e) {
             Intent rateIntent = rateIntentForUrl("https://play.google.com/store/apps/details");
             startActivity(rateIntent);
         }
     }
 
-    private Intent rateIntentForUrl(String url)
-    {
+    private Intent rateIntentForUrl(String url) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("%s?id=%s", url, getPackageName())));
         int flags = Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
-        if (Build.VERSION.SDK_INT >= 21)
-        {
+        if (Build.VERSION.SDK_INT >= 21) {
             flags |= Intent.FLAG_ACTIVITY_NEW_DOCUMENT;
-        }
-        else
-        {
+        } else {
             //noinspection deprecation
             flags |= Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET;
         }
@@ -775,21 +761,21 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         String date = new SimpleDateFormat("MM-dd-yyyy").format(new Date());
         String time = new SimpleDateFormat("HHmmss").format(new Date());
 
-        String trimmedAppName = getResources().getString(R.string.appname_export).replaceAll("\\s+","");
+        String trimmedAppName = getResources().getString(R.string.appname_export).replaceAll("\\s+", "");
         File outDirName = getDBStorageDir(trimmedAppName);
         String outFileName = outDirName + "/" + "birdinhand" + "_" + date + ".db";
 
         // check to see if file already exists
         File file = new File(outFileName);
-        if(file.exists()) {
+        if (file.exists()) {
             // if the file already exists, add the time to the end to ensure we don't overwrite
             outFileName = outDirName + "/" + "birdinhand" + "_" + date + "_" + time + ".db";
             File file2 = new File(outFileName);
-            if(file2.exists()) {
+            if (file2.exists()) {
                 Toast.makeText(context, "Error - File already exists!", Toast.LENGTH_LONG).show();
             }
         }
-            // Open the empty db as the output stream
+        // Open the empty db as the output stream
         OutputStream output = new FileOutputStream(outFileName);
 
         // Transfer bytes from the inputfile to the outputfile
@@ -886,6 +872,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
             promptForImportFile(MainActivity.this);
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -914,7 +901,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         }
     }
 
-    public  ArrayAdapter<String> locateImportDB(String dirName) {
+    public ArrayAdapter<String> locateImportDB(String dirName) {
         // TODO consider moving this to Utility Class
         File f = null;
         File[] paths;
@@ -948,24 +935,25 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
                     System.out.println(path);
                 }
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             // if any error occurs
             e.printStackTrace();
         }
         return arrayAdapter;
     }
+
     private void promptForImportFile(Context context) {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
         builderSingle.setIcon(R.drawable.ic_pg_icon);
         builderSingle.setTitle(R.string.import_prompt_title);
 
-        String trimmedAppName = getResources().getString(R.string.appname_export).replaceAll("\\s+","");
+        String trimmedAppName = getResources().getString(R.string.appname_export).replaceAll("\\s+", "");
         final ArrayAdapter<String> arrayAdapter = locateImportDB(trimmedAppName);
 
         if (arrayAdapter.isEmpty()) {
             // add diaglog to say No files found
             dialogNoImportFiles();
-        }  else {
+        } else {
             builderSingle.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
