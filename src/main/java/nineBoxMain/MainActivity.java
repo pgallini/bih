@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         // initialize preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-
         // attach the layout to the toolbar object and then set the toolbar as the ActionBar ...
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -164,7 +163,6 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         findViewById(R.id.button_add_people).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(view.getContext(), CandidatesListActivity.class);
                 intent.putExtra("displayTutorialMain", String.valueOf(displayTutorialAdd));
                 startActivityForResult(intent, CANDIDATESLIST_ACTIVITY_REQUEST_CODE);
@@ -174,11 +172,6 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         findViewById(R.id.button_set_questions).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                // TODO Remove
-
-                System.out.println(" *** (in Main before) displayTutorialEval = ");
-                System.out.println(displayTutorialEval);
                 Intent intent = new Intent(view.getContext(), EvalCandidatesListActivity.class);
                 intent.putExtra("displayTutorialMain", String.valueOf(displayTutorialEval));
                 startActivityForResult(intent, EVALUATION_ACTIVITY_REQUEST_CODE);
@@ -193,16 +186,6 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
                 startActivityForResult(intent, REPORT_ACTIVITY_REQUEST_CODE);
             }
         });
-    }
-
-    private void augmentAppName() {
-        String currentTitle = (String) this.getTitle();
-
-        if (BuildConfig.FLAVOR == "free") {
-//            this.setTitle(currentTitle + " Free");
-        } else {
-            this.setTitle(currentTitle + " Pro");
-        }
     }
 
     private void runTutorial() {
@@ -257,6 +240,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
                                 sv4 = buildTutorialView(target4, R.string.showcase_message4, null);
                                 // change button text for last
                                 sv4.setButtonText(getResources().getString(R.string.showcase_btn_last));
+                                sv4.setBlocksTouches(true);  // #TEMP999
                                 sv4.setButtonPosition(lpsBtn);
 
                             }
@@ -264,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
                         // build and display the next view in the tutorial
                         sv3 = buildTutorialView(target3, R.string.showcase_message3, tutBtnListener4);
                         sv3.setButtonPosition(lpsBtn);
+                        sv3.setBlocksTouches(true);  // #TEMP999
 
                         // forcing text to be above the target because otherwise it goes to the left and is squished
                         sv3.forceTextPosition(ShowcaseView.ABOVE_SHOWCASE);
@@ -272,6 +257,7 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
                 // build and display the next view in the tutorial
                 sv2 = buildTutorialView(target2, R.string.showcase_message2, tutBtnListener3);
                 sv2.setButtonPosition(lpsBtn);
+                sv2.setBlocksTouches(true);  // #TEMP999
                 // forcing text to be below the target because otherwise it goes to the left and is squished
                 sv2.forceTextPosition(ShowcaseView.BELOW_SHOWCASE);
             }
@@ -279,6 +265,8 @@ public class MainActivity extends AppCompatActivity implements OnShowcaseEventLi
         // instantiate a new view for the the tutorial ...
         sv = buildTutorialView(target, R.string.showcase_message1, tutBtnListener);
         sv.setButtonPosition(lpsBtn);
+        sv.setBlocksTouches(true);  // #TEMP999
+
 //        sv.setLayoutParams(layoutParams);   // not working
         MainActivity.displayTutorialMain = false;
         SharedPreferences settings = getSharedPreferences("preferences", Context.MODE_PRIVATE);
