@@ -29,8 +29,6 @@
     <string name="title_activity_evaluation">bird-in-hand: Evaluate People</string>
     <string name="title_activity_report">bird-in-hand: See Results</string>
 
-    <string name="feature_not_available_message">This feature is not available in the free version of bird-in-hand.  Select OK now to upgrade to the Pro version and the most out of the app!</string>
-
     // Report strings
     <string name="save_rpt_button">Summary</string>
     <string name="xCoordLable">Availability:</string>
@@ -38,6 +36,13 @@
 
     // for pop-up in Report, lets use Reminders instead of Notes for bih
     <string name="notesLabel">Reminders:</string>
+
+    // Upgrade message (use Plus, not Pro)
+    <string name="why_upgrade_title">Why upgrade to the Plus Version?</string>
+    <string name="why_upgrade_message">Upgrade to the Plus version now and enjoy the following benefits:\n  - No ads \n   - Ability to change the questions \n   - View a summary of results. \n \n  Select OK now to upgrade!</string>
+
+    <string name="feature_not_available_title">Upgrade to the Plus Version!</string>
+    <string name="feature_not_available_message">This feature is not available in the free version of bird-in-hand.  Select OK now to upgrade to the Plus version and the most out of the app!</string>
 
     // for tutorial/showcase
     <string name="showcase_main_title">bird-in-hand Tutorial</string>
