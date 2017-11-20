@@ -22,7 +22,7 @@ public class UserOperations {
     private SQLiteDatabase database;
 
     public UserOperations(Context context) {
-        dbHelper = new DatabaseOpenHelper(context);
+        dbHelper = DatabaseOpenHelper.getInstance(context);
     }
 
     public void open() throws SQLException {
